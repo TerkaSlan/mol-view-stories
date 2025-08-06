@@ -6,17 +6,27 @@ import os
 import traceback
 
 import msgpack
-
 from error_handlers import APIError
-from storage.client import (MINIO_BUCKET, ensure_bucket_exists,
-                            handle_minio_error, list_minio_objects,
-                            minio_client)
-from storage.metadata import (update_metadata_timestamp,
-                              validate_data_filename, validate_metadata)
-from storage.utils import (extract_unique_object_directories,
-                           extract_user_ids_from_objects, get_content_type,
-                           get_data_file_extension, get_object_path,
-                           get_plural_type)
+from storage.client import (
+    MINIO_BUCKET,
+    ensure_bucket_exists,
+    handle_minio_error,
+    list_minio_objects,
+    minio_client,
+)
+from storage.metadata import (
+    update_metadata_timestamp,
+    validate_data_filename,
+    validate_metadata,
+)
+from storage.utils import (
+    extract_unique_object_directories,
+    extract_user_ids_from_objects,
+    get_content_type,
+    get_data_file_extension,
+    get_object_path,
+    get_plural_type,
+)
 
 logger = logging.getLogger(__name__)
 

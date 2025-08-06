@@ -4,8 +4,12 @@ from datetime import datetime
 from jsonschema import ValidationError, validate
 
 from error_handlers import APIError
-from schemas import (get_allowed_extensions, session_metadata_schema,
-                     story_metadata_schema, validate_file_extension)
+from schemas import (
+    get_allowed_extensions,
+    session_metadata_schema,
+    story_metadata_schema,
+    validate_file_extension,
+)
 
 
 def create_metadata(object_type, user_info, title="", description="", tags=None):

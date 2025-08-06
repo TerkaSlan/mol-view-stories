@@ -1,4 +1,5 @@
 """Administrative and utility route handlers."""
+
 import logging
 
 from flask import Blueprint, jsonify, request, session

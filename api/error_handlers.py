@@ -1,4 +1,5 @@
 """Error handling utilities for the API."""
+
 import logging
 from functools import wraps
 

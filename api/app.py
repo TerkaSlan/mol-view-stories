@@ -1,4 +1,5 @@
 """Main Flask application - refactored with modular structure."""
+
 import logging
 
 from flask import Flask, current_app, jsonify, request
@@ -7,6 +8,7 @@ from werkzeug.exceptions import RequestEntityTooLarge
 # Configuration
 from config import configure_app
 from routes.admin_routes import admin_bp
+
 # Route blueprints
 from routes.session_routes import session_bp
 from routes.story_routes import story_bp

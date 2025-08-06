@@ -1,4 +1,5 @@
 """Authentication and authorization utilities."""
+
 import logging
 import os
 from functools import wraps
