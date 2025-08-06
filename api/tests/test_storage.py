@@ -7,16 +7,21 @@ from unittest.mock import MagicMock, Mock, patch
 import pytest
 
 from error_handlers import APIError
+
 # Import storage modules for testing
-from storage.client import (MINIO_ACCESS_KEY, MINIO_BUCKET, MINIO_ENDPOINT,
-                            MINIO_SECRET_KEY, ensure_bucket_exists,
-                            handle_minio_error, list_minio_buckets,
-                            list_minio_objects)
-from storage.metadata import (create_metadata, validate_data_filename,
-                              validate_metadata)
+from storage.client import (
+    MINIO_ACCESS_KEY,
+    MINIO_BUCKET,
+    MINIO_ENDPOINT,
+    MINIO_SECRET_KEY,
+    ensure_bucket_exists,
+    handle_minio_error,
+    list_minio_buckets,
+    list_minio_objects,
+)
+from storage.metadata import create_metadata, validate_data_filename, validate_metadata
 from storage.quota import count_user_sessions, count_user_stories
-from storage.utils import (get_content_type, get_data_file_extension,
-                           get_object_path)
+from storage.utils import get_content_type, get_data_file_extension, get_object_path
 
 
 class TestStorageClient:
@@ -361,9 +366,14 @@ class TestStorageIntegration:
 
     def test_storage_module_imports(self):
         """Test that all storage module functions can be imported."""
-        from storage import (MINIO_BUCKET, count_user_sessions,
-                             create_metadata, get_object_path, minio_client,
-                             save_object)
+        from storage import (
+            MINIO_BUCKET,
+            count_user_sessions,
+            create_metadata,
+            get_object_path,
+            minio_client,
+            save_object,
+        )
 
         # All imports should succeed
         assert True

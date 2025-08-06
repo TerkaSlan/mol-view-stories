@@ -3,8 +3,14 @@
 import pytest
 from pydantic import ValidationError
 
-from schemas import (BaseItemUpdate, SessionInput, SessionUpdate, StoryInput,
-                     base_metadata_schema, creator_schema)
+from schemas import (
+    BaseItemUpdate,
+    SessionInput,
+    SessionUpdate,
+    StoryInput,
+    base_metadata_schema,
+    creator_schema,
+)
 
 
 class TestSessionInput:
