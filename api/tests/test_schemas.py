@@ -18,50 +18,79 @@ class TestSessionInput:
 
     def test_session_input_valid_minimal(self):
         """Test SessionInput with minimal valid data."""
+        import base64
+
+        import msgpack
+
+        # Create valid msgpack data
+        test_data = {"test": "data"}
+        msgpack_data = msgpack.packb(test_data)
+        base64_data = base64.b64encode(msgpack_data).decode("utf-8")
+
         data = {
+            "filename": "test.mvstory",
             "title": "Test Session",
             "description": "A test session",
-            "data": {"test": "data"},
+            "data": base64_data,
         }
 
         session = SessionInput(**data)
         assert session.title == "Test Session"
         assert session.description == "A test session"
-        assert session.data == {"test": "data"}
+        assert session.filename == "test.mvstory"
+        assert session.data == base64_data
 
     def test_session_input_valid_full(self):
         """Test SessionInput with all fields."""
+        import base64
+
+        import msgpack
+
+        # Create valid msgpack data
+        test_data = {"camera": {"position": [0, 0, 10]}}
+        msgpack_data = msgpack.packb(test_data)
+        base64_data = base64.b64encode(msgpack_data).decode("utf-8")
+
         data = {
+            "filename": "full_test.mvstory",
             "title": "Full Test Session",
             "description": "A complete test session",
             "tags": ["test", "demo"],
-            "data": {"camera": {"position": [0, 0, 10]}},
-            "format": "json",
-            "version": "1.0",
+            "data": base64_data,
         }
 
         session = SessionInput(**data)
         assert session.title == "Full Test Session"
         assert session.tags == ["test", "demo"]
-        assert session.format == "json"
-        assert session.version == "1.0"
+        assert session.filename == "full_test.mvstory"
+        assert session.data == base64_data
 
     def test_session_input_missing_required_field(self):
         """Test SessionInput validation with missing required field."""
-        data = {"description": "Missing title", "data": {"test": "data"}}
+        import base64
+
+        import msgpack
+
+        # Create valid msgpack data
+        test_data = {"test": "data"}
+        msgpack_data = msgpack.packb(test_data)
+        base64_data = base64.b64encode(msgpack_data).decode("utf-8")
+
+        data = {"description": "Missing filename", "data": base64_data}
 
         with pytest.raises(ValidationError) as exc_info:
             SessionInput(**data)
 
         errors = exc_info.value.errors()
-        assert any(error["loc"] == ("title",) for error in errors)
+        assert any(error["loc"] == ("filename",) for error in errors)
 
     def test_session_input_invalid_data_type(self):
         """Test SessionInput validation with invalid data type."""
         data = {
+            "filename": "test.mvstory",
             "title": "Test Session",
             "description": "A test session",
-            "data": "invalid data type",  # Should be dict
+            "data": 123,  # Should be string
         }
 
         with pytest.raises(ValidationError) as exc_info:
@@ -72,10 +101,20 @@ class TestSessionInput:
 
     def test_session_input_invalid_tags_type(self):
         """Test SessionInput validation with invalid tags type."""
+        import base64
+
+        import msgpack
+
+        # Create valid msgpack data
+        test_data = {"test": "data"}
+        msgpack_data = msgpack.packb(test_data)
+        base64_data = base64.b64encode(msgpack_data).decode("utf-8")
+
         data = {
+            "filename": "test.mvstory",
             "title": "Test Session",
             "description": "A test session",
-            "data": {"test": "data"},
+            "data": base64_data,
             "tags": "should be a list",
         }
 
@@ -87,16 +126,26 @@ class TestSessionInput:
 
     def test_session_input_default_values(self):
         """Test SessionInput default values."""
+        import base64
+
+        import msgpack
+
+        # Create valid msgpack data
+        test_data = {"test": "data"}
+        msgpack_data = msgpack.packb(test_data)
+        base64_data = base64.b64encode(msgpack_data).decode("utf-8")
+
         data = {
+            "filename": "test.mvstory",
             "title": "Test Session",
             "description": "A test session",
-            "data": {"test": "data"},
+            "data": base64_data,
         }
 
         session = SessionInput(**data)
         assert session.tags == []
-        assert session.format == "binary"
-        assert session.version == "1.0"
+        assert session.title == "Test Session"
+        assert session.description == "A test session"
 
 
 class TestSessionUpdate:
@@ -137,112 +186,74 @@ class TestStoryInput:
     def test_story_input_valid_minimal(self):
         """Test StoryInput with minimal valid data."""
         data = {
+            "filename": "test.mvsj",
             "title": "Test Story",
             "description": "A test story",
-            "scenes": [
-                {
-                    "title": "Scene 1",
-                    "description": "First scene",
-                    "data": {"test": "data"},
-                }
-            ],
+            "data": {"test": "data"},
         }
 
         story = StoryInput(**data)
         assert story.title == "Test Story"
-        assert len(story.scenes) == 1
-        assert story.scenes[0]["title"] == "Scene 1"
+        assert story.description == "A test story"
+        assert story.filename == "test.mvsj"
+        assert story.data == {"test": "data"}
 
     def test_story_input_valid_full(self):
         """Test StoryInput with all fields."""
         data = {
+            "filename": "full_test.mvsj",
             "title": "Full Test Story",
             "description": "A complete test story",
             "tags": ["story", "test"],
-            "scenes": [
-                {
-                    "title": "Scene 1",
-                    "description": "First scene",
-                    "data": {"camera": {"position": [0, 0, 10]}},
-                },
-                {
-                    "title": "Scene 2",
-                    "description": "Second scene",
-                    "data": {"camera": {"position": [5, 5, 15]}},
-                },
-            ],
-            "format": "json",
-            "version": "2.0",
+            "data": {
+                "scenes": [
+                    {
+                        "title": "Scene 1",
+                        "description": "First scene",
+                        "data": {"camera": {"position": [0, 0, 10]}},
+                    },
+                    {
+                        "title": "Scene 2",
+                        "description": "Second scene",
+                        "data": {"camera": {"position": [5, 5, 15]}},
+                    },
+                ]
+            },
         }
 
         story = StoryInput(**data)
         assert story.title == "Full Test Story"
-        assert len(story.scenes) == 2
-        assert story.format == "json"
-        assert story.version == "2.0"
+        assert story.filename == "full_test.mvsj"
+        assert story.tags == ["story", "test"]
+        assert "scenes" in story.data
 
     def test_story_input_missing_required_field(self):
         """Test StoryInput validation with missing required field."""
         data = {
-            "description": "Missing title",
-            "scenes": [{"title": "Scene 1", "description": "Test", "data": {}}],
+            "description": "Missing filename",
+            "data": {
+                "scenes": [{"title": "Scene 1", "description": "Test", "data": {}}]
+            },
         }
 
         with pytest.raises(ValidationError) as exc_info:
             StoryInput(**data)
 
         errors = exc_info.value.errors()
-        assert any(error["loc"] == ("title",) for error in errors)
-
-    def test_story_input_empty_scenes(self):
-        """Test StoryInput validation with empty scenes."""
-        data = {"title": "Test Story", "description": "A test story", "scenes": []}
-
-        with pytest.raises(ValidationError) as exc_info:
-            StoryInput(**data)
-
-        # Should fail validation due to empty scenes list
-        errors = exc_info.value.errors()
-        assert any(error["loc"] == ("scenes",) for error in errors)
-
-    def test_story_input_invalid_scene_structure(self):
-        """Test StoryInput validation with invalid scene structure."""
-        data = {
-            "title": "Test Story",
-            "description": "A test story",
-            "scenes": [
-                {
-                    "title": "Scene 1",
-                    # Missing description and data
-                }
-            ],
-        }
-
-        with pytest.raises(ValidationError) as exc_info:
-            StoryInput(**data)
-
-        errors = exc_info.value.errors()
-        # Should have errors for missing scene fields
-        assert len(errors) > 0
+        assert any(error["loc"] == ("filename",) for error in errors)
 
     def test_story_input_default_values(self):
         """Test StoryInput default values."""
         data = {
-            "title": "Test Story",
-            "description": "A test story",
-            "scenes": [
-                {
-                    "title": "Scene 1",
-                    "description": "Test scene",
-                    "data": {"test": "data"},
-                }
-            ],
+            "filename": "test.mvsj",
+            "data": {"test": "data"},
         }
 
         story = StoryInput(**data)
+        assert story.title == ""
+        assert story.description == ""
         assert story.tags == []
-        assert story.format == "binary"
-        assert story.version == "1.0"
+        assert story.filename == "test.mvsj"
 
 
 class TestBaseItemUpdate:
@@ -293,10 +304,20 @@ class TestSchemaIntegration:
 
     def test_session_input_to_dict(self):
         """Test converting SessionInput to dictionary."""
+        import base64
+
+        import msgpack
+
+        # Create valid msgpack data
+        test_data = {"test": "data"}
+        msgpack_data = msgpack.packb(test_data)
+        base64_data = base64.b64encode(msgpack_data).decode("utf-8")
+
         data = {
+            "filename": "test.mvstory",
             "title": "Test Session",
             "description": "A test session",
-            "data": {"test": "data"},
+            "data": base64_data,
             "tags": ["test"],
         }
 
@@ -306,19 +327,23 @@ class TestSchemaIntegration:
         assert session_dict["title"] == "Test Session"
         assert session_dict["tags"] == ["test"]
         assert "data" in session_dict
+        assert session_dict["filename"] == "test.mvstory"
 
     def test_story_input_to_dict(self):
         """Test converting StoryInput to dictionary."""
         data = {
+            "filename": "test.mvsj",
             "title": "Test Story",
             "description": "A test story",
-            "scenes": [
-                {
-                    "title": "Scene 1",
-                    "description": "Test scene",
-                    "data": {"camera": {"position": [0, 0, 10]}},
-                }
-            ],
+            "data": {
+                "scenes": [
+                    {
+                        "title": "Scene 1",
+                        "description": "Test scene",
+                        "data": {"camera": {"position": [0, 0, 10]}},
+                    }
+                ]
+            },
             "tags": ["story", "test"],
         }
 
@@ -326,28 +351,44 @@ class TestSchemaIntegration:
         story_dict = story.dict()
 
         assert story_dict["title"] == "Test Story"
-        assert len(story_dict["scenes"]) == 1
-        assert story_dict["scenes"][0]["title"] == "Scene 1"
+        assert story_dict["filename"] == "test.mvsj"
+        assert "scenes" in story_dict["data"]
+        assert len(story_dict["data"]["scenes"]) == 1
 
     def test_schema_validation_preserves_data_types(self):
         """Test that schema validation preserves correct data types."""
+        import base64
+
+        import msgpack
+
+        # Create valid msgpack data with different types
+        test_data = {
+            "number": 42,
+            "boolean": True,
+            "list": [1, 2, 3],
+            "nested": {"key": "value"},
+        }
+        msgpack_data = msgpack.packb(test_data)
+        base64_data = base64.b64encode(msgpack_data).decode("utf-8")
+
         data = {
+            "filename": "test.mvstory",
             "title": "Test Session",
             "description": "A test session",
-            "data": {
-                "number": 42,
-                "boolean": True,
-                "list": [1, 2, 3],
-                "nested": {"key": "value"},
-            },
+            "data": base64_data,
         }
 
         session = SessionInput(**data)
 
-        assert isinstance(session.data["number"], int)
-        assert isinstance(session.data["boolean"], bool)
-        assert isinstance(session.data["list"], list)
-        assert isinstance(session.data["nested"], dict)
+        # The data is stored as base64 string in the schema
+        assert isinstance(session.data, str)
+
+        # But when decoded back, it preserves types
+        decoded_data = msgpack.unpackb(base64.b64decode(session.data))
+        assert isinstance(decoded_data["number"], int)
+        assert isinstance(decoded_data["boolean"], bool)
+        assert isinstance(decoded_data["list"], list)
+        assert isinstance(decoded_data["nested"], dict)
 
     def test_update_schema_excludes_none_values(self):
         """Test that update schemas properly exclude None values."""

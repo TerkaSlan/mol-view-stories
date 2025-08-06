@@ -24,12 +24,6 @@ def index():
     return "You are not logged in."
 
 
-@admin_bp.route("/ready")
-def ready():
-    """Health check endpoint."""
-    return "OK", 200
-
-
 @admin_bp.route("/api/userinfo")
 @error_handler
 def userinfo():

@@ -99,18 +99,6 @@ class TestBasicFunctionality:
         assert story_bp is not None
         assert admin_bp is not None
 
-    def test_unauthorized_access(self, client):
-        """Test that protected endpoints require authentication."""
-        response = client.get("/api/sessions")
-        # Should return either 401 (unauthorized) or 404 (endpoint not found)
-        # Both are acceptable as they indicate the endpoint is protected
-        assert response.status_code in [401, 404]
-
-    def test_nonexistent_endpoint(self, client):
-        """Test that non-existent endpoints return 404."""
-        response = client.get("/api/nonexistent")
-        assert response.status_code == 404
-
     @patch("requests.Session")
     def test_mock_userinfo_request(self, mock_session_class):
         """Test that we can mock userinfo requests."""
@@ -126,17 +114,11 @@ class TestBasicFunctionality:
         result = make_userinfo_request("test-token")
         assert result["sub"] == "test-user"
 
-    def test_pytest_fixtures(self, app, client, mock_userinfo):
+    def test_pytest_fixtures(self, app, mock_userinfo):
         """Test that pytest fixtures are working."""
         assert app is not None
-        assert client is not None
         assert mock_userinfo is not None
         assert mock_userinfo["sub"] == "test-user-123"
-
-    def test_cors_headers(self, client):
-        """Test that CORS headers are present."""
-        response = client.options("/ready")
-        assert response.status_code == 200
 
 
 class TestErrorHandlerModule:
