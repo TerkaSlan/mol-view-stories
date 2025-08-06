@@ -5,9 +5,10 @@ import warnings
 from urllib.parse import urlparse
 
 import urllib3
-from error_handlers import APIError
 from minio import Minio
 from minio.error import S3Error
+
+from error_handlers import APIError
 
 # Suppress only the single InsecureRequestWarning
 warnings.filterwarnings("ignore", category=urllib3.exceptions.InsecureRequestWarning)
@@ -49,7 +50,7 @@ if MINIO_ENABLED:
     MINIO_HOST = parsed_url.netloc if parsed_url.netloc else parsed_url.path
 
     # Log configuration for debugging
-    logger.info(f"MinIO Configuration:")
+    logger.info("MinIO Configuration:")
     logger.info(f"  Environment: {ENVIRONMENT}")
     logger.info(f"  Endpoint: {MINIO_ENDPOINT}")
     logger.info(f"  Host: {MINIO_HOST}")

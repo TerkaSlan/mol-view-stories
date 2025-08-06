@@ -10,3 +10,10 @@ python-jose
 pydantic==1.10.12
 msgpack
 gunicorn
+
+# Testing dependencies
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-flask>=1.2.0
+pytest-mock>=3.11.0
+responses>=0.23.0

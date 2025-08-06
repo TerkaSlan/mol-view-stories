@@ -23,7 +23,7 @@ jobs:
         run: |
           cd api
           pip install -r requirements.txt
-          pip install flake8 black isort bandit safety pytest
+          pip install flake8 black isort pytest
 
       - name: Run linting (flake8)
         run: |
@@ -34,24 +34,12 @@ jobs:
       - name: Run code formatting check (black)
         run: |
           cd api
-          black --check --diff .
+          python -m black --check --diff .
 
       - name: Run import sorting check (isort)
         run: |
           cd api
-          isort --check-only --diff .
-
-      - name: Run security scanning (bandit)
-        run: |
-          cd api
-          bandit -r . -f json -o bandit-report.json || true
-          bandit -r . -f txt -o bandit-report.txt || true
-
-      - name: Run dependency security check (safety)
-        run: |
-          cd api
-          safety check --json --output api/safety-report.json || true
-          safety check --full-report || true
+          python -m isort --check-only --diff .
 
       - name: Run tests
         run: |
@@ -79,11 +67,12 @@ jobs:
         with:
           context: ./api
           push: false
-          tags: test-image:latest
+          load: true
+          tags: mol-view-stories-api:pr-test
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
       - name: Verify Docker image
         run: |
-          docker images test-image:latest
-          docker run --rm test-image:latest python --version 
+          docker images mol-view-stories-api:pr-test
+          docker run --rm mol-view-stories-api:pr-test python --version 
