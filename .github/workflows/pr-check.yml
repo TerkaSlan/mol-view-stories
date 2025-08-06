@@ -34,12 +34,12 @@ jobs:
       - name: Run code formatting check (black)
         run: |
           cd api
-          black --check --diff .
+          python -m black --check --diff .
 
       - name: Run import sorting check (isort)
         run: |
           cd api
-          isort --check-only --diff .
+          python -m isort --check-only --diff .
 
       - name: Run tests
         run: |
