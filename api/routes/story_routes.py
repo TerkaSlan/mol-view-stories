@@ -4,21 +4,15 @@ import io
 import json
 import logging
 
-from auth import get_user_from_request
-from error_handlers import APIError, error_handler
 from flask import Blueprint, current_app, jsonify, request, send_file
 from pydantic import ValidationError
+
+from auth import get_user_from_request
+from error_handlers import APIError, error_handler
 from schemas import BaseItemUpdate, StoryInput
-from storage import (
-    MINIO_BUCKET,
-    check_user_story_limit,
-    create_metadata,
-    delete_story_by_id,
-    list_objects_by_type,
-    minio_client,
-    save_object,
-    update_story_by_id,
-)
+from storage import (MINIO_BUCKET, check_user_story_limit, create_metadata,
+                     delete_story_by_id, list_objects_by_type, minio_client,
+                     save_object, update_story_by_id)
 from utils import validate_payload_size
 
 logger = logging.getLogger(__name__)

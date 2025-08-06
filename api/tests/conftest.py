@@ -5,9 +5,9 @@ import tempfile
 from unittest.mock import Mock, patch
 
 import pytest
-from config import configure_app
 
 from app import app as flask_app
+from config import configure_app
 
 
 @pytest.fixture

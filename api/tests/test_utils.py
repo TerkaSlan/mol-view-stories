@@ -5,8 +5,10 @@ import json
 from unittest.mock import Mock, patch
 
 import pytest
-from utils import SizeLimitedStream, SizeValidationMiddleware, validate_payload_size
 from werkzeug.exceptions import RequestEntityTooLarge
+
+from utils import (SizeLimitedStream, SizeValidationMiddleware,
+                   validate_payload_size)
 
 
 class TestValidatePayloadSize:

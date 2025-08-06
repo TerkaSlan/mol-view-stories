@@ -3,8 +3,9 @@
 from unittest.mock import Mock, patch
 
 import pytest
-from error_handlers import APIError, error_handler, handle_api_error
 from werkzeug.exceptions import RequestEntityTooLarge
+
+from error_handlers import APIError, error_handler, handle_api_error
 
 
 class TestAPIError:

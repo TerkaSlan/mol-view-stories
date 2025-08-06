@@ -31,7 +31,8 @@ class TestBasicFunctionality:
 
     def test_import_auth(self):
         """Test that auth module can be imported."""
-        from auth import get_user_from_request, make_userinfo_request, session_required
+        from auth import (get_user_from_request, make_userinfo_request,
+                          session_required)
 
         assert session_required is not None
         assert get_user_from_request is not None
@@ -47,11 +48,8 @@ class TestBasicFunctionality:
 
     def test_import_utils(self):
         """Test that utils can be imported."""
-        from utils import (
-            SizeLimitedStream,
-            SizeValidationMiddleware,
-            validate_payload_size,
-        )
+        from utils import (SizeLimitedStream, SizeValidationMiddleware,
+                           validate_payload_size)
 
         assert validate_payload_size is not None
         assert SizeLimitedStream is not None

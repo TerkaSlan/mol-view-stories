@@ -4,6 +4,7 @@ import os
 from unittest.mock import Mock, patch
 
 import pytest
+
 from config import configure_app, configure_cors
 
 

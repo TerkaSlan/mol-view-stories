@@ -4,6 +4,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 import requests
+
 from auth import get_user_from_request, make_userinfo_request, session_required
 from error_handlers import APIError
 

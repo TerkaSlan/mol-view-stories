@@ -5,6 +5,7 @@ from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 import responses
+
 from error_handlers import APIError
 
 
