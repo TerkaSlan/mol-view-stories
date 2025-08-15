@@ -32,7 +32,7 @@ ENV NEXT_PUBLIC_APP_PREFIX=${NEXT_PUBLIC_APP_PREFIX}
 RUN npm run build
 
 # Production image, copy all the files and run nginx
-FROM nginx:alpine AS runner
+FROM nginxinc/nginx-unprivileged AS runner
 WORKDIR /usr/share/nginx/html
 
 # Remove default nginx static assets
@@ -42,10 +42,10 @@ RUN rm -rf ./*
 COPY --from=builder /app/out .
 
 # Copy nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port
-EXPOSE 80
+EXPOSE 8080
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]
