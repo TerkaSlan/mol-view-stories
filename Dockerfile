@@ -35,10 +35,7 @@ RUN npm run build
 FROM nginxinc/nginx-unprivileged AS runner
 WORKDIR /usr/share/nginx/html
 
-# Remove default nginx static assets
-RUN rm -rf ./*
-
-# Copy static assets from builder stage
+# Copy static assets from builder stage (this will overwrite default files)
 COPY --from=builder /app/out .
 
 # Copy nginx configuration
