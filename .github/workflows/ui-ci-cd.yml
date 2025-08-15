@@ -14,7 +14,7 @@ on:
       - 'eslint.config.mjs'
       - 'Dockerfile'
       - 'nginx.conf'
-      - 'ui-deploy-dev.yaml'
+      - '.github/ui-deploy-dev.yaml'
       - '.github/workflows/ui-ci-cd.yml'
   pull_request:
     branches: [ main, develop ]
@@ -29,7 +29,7 @@ on:
       - 'eslint.config.mjs'
       - 'Dockerfile'
       - 'nginx.conf'
-      - 'ui-deploy-dev.yaml'
+      - '.github/ui-deploy-dev.yaml'
       - '.github/workflows/ui-ci-cd.yml'
 
 env:
@@ -164,10 +164,6 @@ jobs:
         IMAGE_DIGEST='${{ needs.build-and-test.outputs.image_digest }}'
         IMAGE_REF="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${IMAGE_DIGEST}"
 
-        echo "=== UI Development Deployment ==="
-        echo "Image: ${IMAGE_REF}"
-        echo "Namespace: mol-view-stories-ns"
-
         # Check if development deployment exists
         if kubectl get deployment/mol-view-stories-dev-ui -n mol-view-stories-ns >/dev/null 2>&1; then
           echo "Development UI deployment exists, updating image..."
@@ -176,7 +172,7 @@ jobs:
             mol-view-stories-dev-ui-container=${IMAGE_REF} \
             -n mol-view-stories-ns
           
-          # Restart deployment to ensure new image is pulled
+          # Force restart deployment to ensure new configuration is applied
           kubectl rollout restart deployment/mol-view-stories-dev-ui -n mol-view-stories-ns
           
           # Wait for rollout to complete
