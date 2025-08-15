@@ -59,6 +59,11 @@ jobs:
       run: npm run lint
 
     - name: Run type checking
+      env:
+        NEXT_PUBLIC_API_BASE_URL: ${{ vars.NEXT_PUBLIC_API_BASE_URL || 'https://mol-view-stories-dev.dyn.cloud.e-infra.cz' }}
+        NEXT_PUBLIC_OIDC_AUTHORITY: ${{ vars.NEXT_PUBLIC_OIDC_AUTHORITY || 'https://login.aai.lifescience-ri.eu/oidc' }}
+        NEXT_PUBLIC_OIDC_CLIENT_ID: ${{ vars.NEXT_PUBLIC_OIDC_CLIENT_ID || '3963b643-f862-4578-868e-3ba3de08dd2d' }}
+        NEXT_PUBLIC_APP_PREFIX: ${{ vars.NEXT_PUBLIC_APP_PREFIX || 'mol-view-stories/' }}
       run: npm run build
 
     - name: Set up Docker Buildx
